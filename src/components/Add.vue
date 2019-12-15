@@ -4,7 +4,7 @@
     <div class="container mt-3 mt-sm-5">
       <div class="row justify-content-center">
         <div class="col-md-6">
-          <student-form :student="student" studentBtnTitle="Make Student"
+          <student-form :student="student" studentBtnTitle="Add a Student"
                          @student-is-created-updated="submitStudent"></student-form>
         </div><!-- /col -->
       </div><!-- /row -->
@@ -15,11 +15,18 @@
 <script>
 import studentservice from '@/services/studentservice'
 import StudentForm from '@/components/StudentForm'
+import Vue from 'vue'
+import {Alert, Confirm, Toast, Loading} from 'wc-messagebox'
+import 'wc-messagebox/style.css'
+Vue.use(Alert)
+Vue.use(Loading)
+Vue.use(Confirm)
+Vue.use(Toast)
 
 export default {
   data () {
     return {
-      student: {name: 'Jim', age: 20, gender: 0, grade: 3, performance: '1', hobbies: 'Go', message: ''},
+      student: {name: 'Jim', age: 22, gender: 'Boy', grade: 3, performance: 'Good', hobbies: 'Go'},
       messagetitle: ' Add a student '
     }
   },
@@ -27,14 +34,18 @@ export default {
     'student-form': StudentForm
   },
   methods: {
-    submitDonation: function (student) {
+    submitStudent: function (student) {
       studentservice.postStudent(student)
         .then(response => {
+          this.$toast('Success!', {
+            duration: 1000,
+            location: 'center',
+            toastStyle: {
+              height: '200px',
+              width: '300px'
+            }
+          })
           console.log(response)
-        })
-        .catch(error => {
-          this.errors.push(error)
-          console.log(error)
         })
     }
   }

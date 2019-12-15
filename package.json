@@ -2,7 +2,7 @@
   "name": "donationvue-1.0",
   "version": "1.0.0",
   "description": "A Vue.js project",
-  "author": "ddrohan <ddrohan@wit.ie>",
+  "author": "Xu Sima",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
@@ -11,18 +11,26 @@
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
+    "lint:fix": "npm run lint -- --fix",
     "build": "node build/build.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "bootstrap-vue": "^2.0.0-rc.11",
     "vue": "^2.5.2",
+    "vue-alert-component": "^1.0.2",
     "vue-router": "^3.0.1",
     "vue-sweetalert": "^0.1.18",
     "vue-sweetalert2": "^1.4.2",
     "vue-tables-2": "^1.4.62",
     "vueform": "^2.0.0",
-    "vuelidate": "^0.7.4"
+    "vuelidate": "^0.7.4",
+    "wc-messagebox": "^1.10.1",
+    "google": "^2.1.0",
+    "vue-google-maps": "^0.1.21",
+    "vue-resource": "^1.5.1",
+    "vue-youtube": "^1.4.0",
+    "vue2-google-maps": "^0.10.7"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -44,6 +52,7 @@
     "cross-env": "^5.0.1",
     "cross-spawn": "^5.0.1",
     "css-loader": "^0.28.0",
+    "cypress": "^3.8.0",
     "eslint": "^4.15.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-friendly-formatter": "^3.0.0",

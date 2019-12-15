@@ -5,8 +5,8 @@
       <div class="row justify-content-center">
         <div class="col-md-6">
           <template v-if="childDataLoaded">
-          <donation-form :donation="donation" donationBtnTitle="Update Donation"
-                         @donation-is-created-updated="updateDonation"></donation-form>
+            <student-form :student="student" studentBtnTitle="Update Student"
+                          @student-is-created-updated="updateStudent"></student-form>
           </template>
         </div><!-- /col -->
       </div><!-- /row -->
@@ -15,50 +15,75 @@
 </template>
 
 <script>
-import DonationService from '@/services/DonationService'
-import DonationForm from '@/components/DonationForm'
+import studentservice from '@/services/studentservice'
+import StudentForm from '@/components/StudentForm'
+import Vue from 'vue'
+import {Alert, Confirm, Toast, Loading} from 'wc-messagebox'
+import 'wc-messagebox/style.css'
+Vue.use(Alert)
+Vue.use(Loading)
+Vue.use(Confirm)
+Vue.use(Toast)
 
 export default {
   data () {
     return {
-      donation: {},
+      student: {},
       childDataLoaded: false,
       temp: {},
-      messagetitle: ' Update Donation '
+      messagetitle: ' Edit Student '
     }
   },
   components: {
-    'donation-form': DonationForm
+    'student-form': StudentForm
   },
   created () {
-    this.getDonation()
+    this.getStudent()
   },
   methods: {
-    getDonation: function () {
-      DonationService.fetchDonation(this.$router.params)
+    getStudent: function () {
+      studentservice.fetchStudent(this.$router.params)
         .then(response => {
+          // this.student = response.data
           this.temp = response.data
-          this.donation = this.temp[0]
+          this.student = this.temp[0]
           this.childDataLoaded = true
-          console.log('Getting Donation in Edit: ' + JSON.stringify(this.donation, null, 5))
+          console.log('Getting Student in Edit: ' + JSON.stringify(this.student, null, 5))
         })
         .catch(error => {
           this.errors.push(error)
           console.log(error)
         })
     },
-    updateDonation: function (donation) {
-      console.log('Before PUT ' + JSON.stringify(donation, null, 5))
-      DonationService.putDonation(this.$router.params, donation)
+    updateStudent: function (student) {
+      studentservice.editStudent(this.$router.params, student)
         .then(response => {
+          this.$toast('Success!', {
+            duration: 1000,
+            location: 'center',
+            toastStyle: {
+              height: '200px',
+              width: '300px'
+            }
+          })
+          // JSON responses are automatically parsed.
+          this.getStudent()
           console.log(response)
-          console.log('AFTER PUT ' + JSON.stringify(donation, null, 5))
-        })
-        .catch(error => {
-          this.errors.push(error)
-          console.log(error)
         })
     }
+
+    // updateStudent: function (student) {
+    //   console.log('Before PUT ' + JSON.stringify(student, null, 5))
+    //   studentservice.putStudent(this.$router.params, student)
+    //     .then(response => {
+    //       console.log(response)
+    //       console.log('AFTER PUT ' + JSON.stringify(student, null, 5))
+    //     })
+    //     .catch(error => {
+    //       this.errors.push(error)
+    //       console.log(error)
+    //     })
+    // }
   }
 }
 </script>

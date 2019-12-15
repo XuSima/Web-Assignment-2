@@ -1,35 +1,59 @@
 <template>
   <form @submit.prevent="submit">
     <div class="form-group">
-      <label class="form-label">Select Payment Type</label>
-      <select id="paymenttype" name="paymenttype" class="form-control"
-              type="text" v-model="paymenttype">
-        <option value="null" selected disabled hidden>Choose Payment Type</option>
-        <option value="Direct">Direct</option>
-        <option value="PayPal">PayPal</option>
-        <option value="Visa">Visa</option>
+      <label class="form-label">Name</label>
+      <input class="form_input" type="text" v-model="name"/>
+    </div>
+    <div class="error" v-if="!$v.name.required">Name is required</div>
+    <div class="error" v-if="!$v.name.minLength">Name is too short</div>
+    <div class="form-group">
+      <label class="form-label">Select Gender</label>
+      <select id="gender" name="gender" class="form-control"
+              type="text" v-model="gender">
+        <option value="null" selected disabled hidden>Choose Gender</option>
+        <option value="Boy">Boy</option>
+        <option value="Girl">Girl</option>
       </select>
     </div>
-    <div class="form-group" :class="{ 'form-group--error': $v.amount.$error }">
-      <label class="form-control-label" name="amount">Amount (Enter a number between 1 and 1000)</label>
-      <input class="form__input" type="decimal" v-model.trim="amount"/>
+    <div class="form-group">
+      <label class="form-label">Select Performance</label>
+      <select id="performance" name="performance" class="form-control"
+              type="text" v-model="performance">
+        <option value="null" selected disabled hidden>Evaluate Performance</option>
+        <option value="Good">Good</option>
+        <option value="Bad">Bad</option>
+      </select>
     </div>
-    <div class="error" v-if="!$v.amount.between">Amount must be between 1 and 1000</div>
-    <div class="form-group" :class="{ 'form-group--error': $v.message.$error }">
-      <label class="form__label">Personal Message</label>
-      <input class="form__input" placeholder="enter some message here" v-model.trim="$v.message.$model"/>
+    <div class="form-group" :class="{ 'form-group--error': $v.age.$error }">
+      <label class="form-control-label" name="age">Age (Enter a number between 16 and 25)</label>
+      <input class="form__input" type="decimal" v-model.trim="age"/>
     </div>
-    <div class="error" v-if="!$v.message.required">Message is Required</div>
-    <div class="error" v-if="!$v.message.minLength">Message must have at least {{$v.message.$params.minLength.min}} letters.</div>
+    <div class="error" v-if="!$v.age.between">Age must be between 6 and 30</div>
+    <div class="error" v-if="!$v.age.required">Age is required</div>
+    <div class="form-group">
+      <label class="form-label">Select Grade</label>
+      <select id="grade" name="grade" class="form-control"
+              type="text" v-model="grade">
+        <option value="null" selected disabled hidden>Choose Grade</option>
+        <option value="1">Grade 1</option>
+        <option value="2">Grade 2</option>
+        <option value="3">Grade 3</option>
+        <option value="4">Grade 4</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Hobbies</label>
+      <input class="form_input" type="text" v-model="hobbies"/>
+    </div>
     <p>
-      <button class="btn btn-primary btn1" type="submit" :disabled="submitStatus === 'PENDING'">{{ donationBtnTitle }}</button>
+      <button class="btn btn-primary btn1" type="submit" :disabled="submitStatus === 'PENDING'">{{ studentBtnTitle }}</button>
     </p>
     <p>
-      <a href="#/donations" class="btn btn-primary btn1" role="button">Manage Donations</a>
+      <a href="#/students" class="btn btn-primary btn1" role="button">Manage Students</a>
     </p>
-    <p class="typo__p" v-if="submitStatus === 'OK'">Thanks for your Donation!</p>
-    <p class="typo__p" v-if="submitStatus === 'ERROR'">Please Fill in the Form Correctly.</p>
-    <p class="typo__p" v-if="submitStatus === 'PENDING'">Donating...</p>
+    <p class="typo__p" v-if="submitStatus === 'OK'">Success</p>
+    <p class="typo__p" v-if="submitStatus === 'ERROR'">Try again.</p>
+    <p class="typo__p" v-if="submitStatus === 'PENDING'">Waiting...</p>
   </form>
 </template>
 
@@ -37,7 +61,7 @@
 import Vue from 'vue'
 import VueForm from 'vueform'
 import Vuelidate from 'vuelidate'
-import { required, minLength, between } from 'vuelidate/lib/validators'
+import { required, between, minLength } from 'vuelidate/lib/validators'
 
 Vue.use(VueForm, {
   inputClasses: {
@@ -50,25 +74,28 @@ Vue.use(Vuelidate)
 
 export default {
   name: 'FormData',
-  props: ['donationBtnTitle', 'donation'],
+  props: ['studentBtnTitle', 'student'],
   data () {
     return {
-      messagetitle: ' Donate ',
-      message: this.donation.message,
-      paymenttype: this.donation.paymenttype,
-      amount: this.donation.amount,
+      messagetitle: ' Add a student ',
+      name: this.student.name,
+      age: this.student.age,
+      gender: this.student.gender,
+      grade: this.student.grade,
+      performance: this.student.performance,
+      hobbies: this.student.hobbies,
       upvotes: 0,
       submitStatus: null
     }
   },
   validations: {
-    message: {
+    age: {
       required,
-      minLength: minLength(5)
+      between: between(16, 25)
     },
-    amount: {
+    name: {
       required,
-      between: between(1, 1000)
+      minLength: minLength(2)
     }
   },
   methods: {
@@ -82,16 +109,19 @@ export default {
         this.submitStatus = 'PENDING'
         setTimeout(() => {
           this.submitStatus = 'OK'
-          var donation = {
-            paymenttype: this.paymenttype,
-            amount: this.amount,
-            upvotes: this.upvotes,
-            message: this.message
+          var student = {
+            name: this.name,
+            age: this.age,
+            gender: this.gender,
+            grade: this.grade,
+            performance: this.performance,
+            hobbies: this.hobbies,
+            upvotes: this.upvotes
           }
-          this.donation = donation
-          console.log('Submitting in DonationForm : ' +
-            JSON.stringify(this.donation, null, 5))
-          this.$emit('donation-is-created-updated', this.donation)
+          this.student = student
+          console.log('Submitting in StudentForm : ' +
+            JSON.stringify(this.student, null, 5))
+          this.$emit('student-is-created-updated', this.student)
         }, 500)
       }
     }
@@ -109,7 +139,7 @@ export default {
     color: red;
     margin-left: 0.25rem;
   }
-  .donate-form .form-control-label.text-left{
+  .add-form .form-control-label.text-left{
     text-align: left;
   }
 

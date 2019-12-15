@@ -1,14 +1,12 @@
 <template>
   <div class="hero">
-    <h1 class="vue-title">Homer for President !!</h1>
+    <h1 class="vue-title">Welcome to Student and Teacher Management System</h1>
 
     <table align="center">
       <tr>
         <td>
-          <p class="lead"><b><i>Time for a change !!</i></b>
-          <p>Out with Boring Prumt - Giving has never been so easy.</p>
-          <p>Just click <a href ="#/donate">here</a> to go to</p>
-          <p>the Donation page and empty your wallet</p>
+          <p>Click <a href ="#/students">SMS</a> to manage students</p>
+          <p>Click <a href ="#/teachers">TMS</a> to manage teachers</p>
         </td>
         <td>
           <img src="../assets/homer.gif" alt="description here" />
