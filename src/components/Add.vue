@@ -4,8 +4,8 @@
     <div class="container mt-3 mt-sm-5">
       <div class="row justify-content-center">
         <div class="col-md-6">
-          <donation-form :donation="donation" donationBtnTitle="Make Donation"
-                         @donation-is-created-updated="submitDonation"></donation-form>
+          <student-form :student="student" studentBtnTitle="Make Student"
+                         @student-is-created-updated="submitStudent"></student-form>
         </div><!-- /col -->
       </div><!-- /row -->
     </div><!-- /container -->
@@ -13,22 +13,22 @@
 </template>
 
 <script>
-import DonationService from '@/services/DonationService'
-import DonationForm from '@/components/DonationForm'
+import studentservice from '@/services/studentservice'
+import StudentForm from '@/components/StudentForm'
 
 export default {
   data () {
     return {
-      donation: {paymenttype: 'Direct', amount: 0.0, message: ''},
-      messagetitle: ' Make Donation '
+      student: {name: 'Jim', age: 20, gender: 0, grade: 3, performance: '1', hobbies: 'Go', message: ''},
+      messagetitle: ' Add a student '
     }
   },
   components: {
-    'donation-form': DonationForm
+    'student-form': StudentForm
   },
   methods: {
-    submitDonation: function (donation) {
-      DonationService.postDonation(donation)
+    submitDonation: function (student) {
+      studentservice.postStudent(student)
         .then(response => {
           console.log(response)
         })

@@ -2,28 +2,28 @@
   <div class="hero">
     <h3 class="vue-title"><i class="fa fa-list" style="padding: 3px"></i>{{messagetitle}}</h3>
     <div id="app1">
-      <v-client-table :columns="columns" :data="donations" :options="options">
+      <v-client-table :columns="columns" :data="students" :options="options">
         <a slot="upvote" slot-scope="props" class="fa fa-thumbs-up fa-2x" @click="upvote(props.row._id)"></a>
-        <a slot="edit" slot-scope="props" class="fa fa-edit fa-2x" @click="editDonation(props.row._id)"></a>
-        <a slot="remove" slot-scope="props" class="fa fa-trash-o fa-2x" @click="deleteDonation(props.row._id)"></a>
+        <a slot="edit" slot-scope="props" class="fa fa-edit fa-2x" @click="editStudent(props.row._id)"></a>
+        <a slot="remove" slot-scope="props" class="fa fa-trash-o fa-2x" @click="deleteStudent(props.row._id)"></a>
       </v-client-table>
     </div>
   </div>
 </template>
 
 <script>
-import DonationService from '@/services/DonationService'
+import studentservice from '@/services/studentservice'
 import Vue from 'vue'
 import VueTables from 'vue-tables-2'
 
 Vue.use(VueTables.ClientTable, {compileTemplates: true, filterByColumn: true})
 
 export default {
-  name: 'Donations',
+  name: 'Students',
   data () {
     return {
-      messagetitle: ' Donations List ',
-      donations: [],
+      messagetitle: 'Students List ',
+      students: [],
       props: ['_id'],
       errors: [],
       columns: ['_id', 'paymenttype', 'amount', 'upvotes', 'upvote', 'edit', 'remove'],
